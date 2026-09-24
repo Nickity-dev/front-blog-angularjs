@@ -1,0 +1,12 @@
+<h2>{{ editando ? 'Editar postagem' : 'Nova postagem' }}</h2>
+<div class="alert alert-danger" ng-if="erro">{{ erro }}</div>
+
+<form ng-submit="salvar()">
+  <input class="form-control mb-3" placeholder="Título" ng-model="post.title" required>
+  <input class="form-control mb-3" placeholder="Descrição curta" ng-model="post.description" required>
+  <input class="form-control mb-3" placeholder="URL da imagem (opcional)" ng-model="post.thumbImage">
+  <textarea class="form-control mb-3" rows="10" placeholder="Conteúdo completo"
+            ng-model="post.content" required></textarea>
+  <button class="btn btn-success">Salvar</button>
+  <a href="#/" class="btn btn-secondary">Cancelar</a>
+</form>

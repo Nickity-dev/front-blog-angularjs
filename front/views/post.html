@@ -1,0 +1,35 @@
+<article class="card p-4 mb-4 shadow-sm" ng-if="post">
+  <img ng-if="post.thumbImage" ng-src="{{ post.thumbImage }}" class="img-fluid mb-3">
+  <h1>{{ post.title }}</h1>
+  <small class="text-muted mb-3">por {{ post.author }} · {{ post.created_at }}</small>
+  <p class="lead">{{ post.description }}</p>
+  <p style="white-space: pre-line">{{ post.content }}</p>
+
+  <div ng-if="ehDono()">
+    <a class="btn btn-warning btn-sm" ng-href="#/editar/{{ post.id }}">Editar</a>
+    <button class="btn btn-danger btn-sm" ng-click="apagarPost()">Excluir</button>
+  </div>
+</article>
+
+<section>
+  <h4>Comentários ({{ comentarios.length }})</h4>
+
+  <div ng-if="Auth.user()" class="mb-3">
+    <textarea class="form-control mb-2" rows="3" ng-model="novo.text"
+              placeholder="Escreva seu comentário..."></textarea>
+    <button class="btn btn-primary btn-sm" ng-click="comentar()">Comentar</button>
+  </div>
+  <p ng-if="!Auth.user()"><a href="#/login">Entre</a> para comentar.</p>
+
+  <div class="card mb-2" ng-repeat="c in comentarios">
+    <div class="card-body d-flex justify-content-between">
+      <div>
+        <strong>{{ c.author }}</strong>
+        <small class="text-muted"> · {{ c.created_at }}</small>
+        <div style="white-space: pre-line">{{ c.text }}</div>
+      </div>
+      <button ng-if="podeApagar(c)" class="btn btn-sm btn-outline-danger align-self-start"
+              ng-click="apagarComentario(c)">Apagar</button>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,18 @@
+<h2 class="mb-4">Últimas postagens</h2>
+<div class="row">
+  <div class="col-md-4" ng-repeat="p in publicacoes">
+    <div class="card mb-4 shadow-sm">
+      <img ng-if="p.thumbImage" ng-src="{{ p.thumbImage }}" class="card-img-top">
+      <div class="card-body">
+        <h5 class="card-title">{{ p.title }}</h5>
+        <p class="card-text text-muted">{{ p.description }}</p>
+        <p class="card-text" ng-if="p.aberto" style="white-space: pre-line">{{ p.content }}</p>
+        <small class="text-muted d-block mb-2">por {{ p.author }}</small>
+        <button class="btn btn-sm btn-outline-secondary" ng-click="alternar(p)">
+          {{ p.aberto ? 'Recolher' : 'Expandir' }}
+        </button>
+        <a class="btn btn-sm btn-primary" ng-href="#/post/{{ p.id }}">Abrir</a>
+      </div>
+    </div>
+  </div>
+</div>
