@@ -48,18 +48,37 @@ angular.module('blog', ['ngRoute'])
   $scope.sair = Auth.sair;
 })
 
-// ---------- Lista + expandir notícia ----------
-.controller('ListaCtrl', function ($scope, $http) {
+// ---------- Ajuda visual: iniciais e cor por autor ----------
+.factory('Ui', function () {
+  var cores = ['#E8A33D', '#1D7874', '#B23A48', '#3B6E8F'];
+  return {
+    iniciais: function (nome) {
+      return nome ? nome.trim().charAt(0).toUpperCase() : '?';
+    },
+    corAutor: function (nome) {
+      if (!nome) return cores[0];
+      var soma = 0;
+      for (var i = 0; i < nome.length; i++) soma += nome.charCodeAt(i);
+      return cores[soma % cores.length];
+    }
+  };
+})
+
+// ---------- Lista + destaque + expandir notícia ----------
+.controller('ListaCtrl', function ($scope, $http, Ui) {
+  $scope.Ui = Ui;
   $http.get(API + '/postagens').then(function (res) {
-    $scope.publicacoes = res.data;
+    $scope.destaque = res.data[0] || null;
+    $scope.resto = res.data.slice(1);
   });
   $scope.alternar = function (p) { p.aberto = !p.aberto; };
 })
 
 // ---------- Notícia individual + comentários ----------
-.controller('PostCtrl', function ($scope, $http, $routeParams, $location, Auth) {
+.controller('PostCtrl', function ($scope, $http, $routeParams, $location, Auth, Ui) {
   var id = $routeParams.id;
   $scope.Auth = Auth;
+  $scope.Ui = Ui;
   $scope.novo = { text: '' };
 
   function carregarComentarios() {
@@ -74,7 +93,6 @@ angular.module('blog', ['ngRoute'])
   $scope.ehDono = function () {
     return Auth.user() && $scope.post && Auth.user().id === $scope.post.user_id;
   };
-  // Autor do comentário OU dono da postagem
   $scope.podeApagar = function (c) {
     return Auth.user() && (Auth.user().id === c.user_id || $scope.ehDono());
   };
