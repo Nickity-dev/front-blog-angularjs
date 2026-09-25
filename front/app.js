@@ -1,4 +1,4 @@
-var API = 'http://localhost:3000';
+var API = 'https://front-blog-angularjs-lah1.onrender.com';
 
 angular.module('blog', ['ngRoute'])
 
